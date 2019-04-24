@@ -1,0 +1,35 @@
+version: 2.1
+
+orbs:
+  helm: banzaicloud/helm@volatile
+
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.12
+        environment:
+          GOFLAG: -mod=readonly
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build
+          command: |
+            go build
+
+workflows:
+  e2e-test:
+    jobs:
+      - build
+  helm-chart:
+    jobs:
+      - helm/publish-chart:
+          context: helm-banzaicloud
+          chart-path: charts/simple-helm-app
+          chartmuseum-url: cm://charts.banzaicloud.io/github/banzaicloud
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /simple-helm-app\/\d+.\d+.\d+/
