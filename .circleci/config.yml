@@ -27,7 +27,7 @@ workflows:
       - helm/publish-chart:
           context: helm-banzaicloud
           chart-path: charts/simple-helm-app
-          chartmuseum-url: cm://charts.banzaicloud.io/github/banzaicloud
+          chartmuseum-url: cm://charts.banzaicloud.io/gh/banzaicloud
           filters:
             branches:
               ignore: /.*/
